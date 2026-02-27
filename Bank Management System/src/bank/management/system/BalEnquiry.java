@@ -60,7 +60,7 @@ public class BalEnquiry extends JFrame implements ActionListener {
     private void loadDataFromDatabase() {
         try {
             ConnectDB con = new ConnectDB();
-            String q = "SELECT SUM(CASE WHEN type = 'Deposit' THEN amount ELSE -amount END) as balance FROM bank_transactions WHERE card_number = ? AND card_pin = ?";
+            String q = "SELECT SUM(CASE WHEN type = 'Deposit' THEN amount ELSE -amount END) as balance FROM transactions WHERE card_number = ? AND card_pin = ?";
 
             try (PreparedStatement pstmt = con.connection.prepareStatement(q)) {
                 pstmt.setString(1, cardNum);

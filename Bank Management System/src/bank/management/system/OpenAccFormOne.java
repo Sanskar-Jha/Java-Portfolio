@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.sql.PreparedStatement;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -219,26 +218,8 @@ public class OpenAccFormOne extends JFrame implements ActionListener {
             if (name.isEmpty() || fatherName.isEmpty() || dOB.isEmpty() || gender == null || email.isEmpty() || maritalStatus == null || address.isEmpty() || city.isEmpty() || pinCode.isEmpty() || state.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please fill all mandatory fields");
             } else {
-//                ConnectDB con = new ConnectDB();
-//                String q = "INSERT INTO open_acc_form_one VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//                PreparedStatement pstmt = con.connection.prepareStatement(q);
-//                pstmt.setString(1, formNum);
-//                pstmt.setString(2, name);
-//                pstmt.setString(3, fatherName);
-//                pstmt.setString(4, dOB);
-//                pstmt.setString(5, gender);
-//                pstmt.setString(6, email);
-//                pstmt.setString(7, maritalStatus);
-//                pstmt.setString(8, address);
-//                pstmt.setString(9, city);
-//                pstmt.setString(10, pinCode);
-//                pstmt.setString(11, state);
-
-                // NOTE: Only call executeUpdate() once without the String 'q1' because pstmt already contains the query.
-//                pstmt.executeUpdate(q);
-//                pstmt.executeUpdate();
-                // OR pass data through constructor
-                new OpenAccFormTwo(formNum, name, fatherName, dOB, gender, email, maritalStatus, address,city, pinCode, state); // Passing formNum to link the data
+                // Pass data through constructor
+                new OpenAccFormTwo(formNum, name, fatherName, dOB, gender, email, maritalStatus, address,city, pinCode, state);
                 setVisible(false);
             }
         } catch (Exception E) {

@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.sql.PreparedStatement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -219,21 +218,6 @@ public class OpenAccFormTwo extends JFrame implements ActionListener {
             } else if (aadhaarNum.length() != 12) {
                 JOptionPane.showMessageDialog(null, "Aadhaar Number must be 12 digits");
             } else {
-//                ConnectDB con = new ConnectDB();
-//                String q = "INSERT INTO open_acc_form_two VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//                PreparedStatement pstmt = con.connection.prepareStatement(q);
-//                pstmt.setString(1, formNum);
-//                pstmt.setString(2, religion);
-//                pstmt.setString(3, category);
-//                pstmt.setString(4, income);
-//                pstmt.setString(5, education);
-//                pstmt.setString(6, occupation);
-//                pstmt.setString(7, panNum);
-//                pstmt.setString(8, aadhaarNum);
-//                pstmt.setString(9, seniorCitizen);
-//                pstmt.setString(10, existingAcc);
-
-//                pstmt.executeUpdate();
                 new OpenAccFormThree(formNum, name, fatherName, dOB, gender, email, maritalStatus, address,city, pinCode, state, religion, category, income, education, occupation, panNum, aadhaarNum, seniorCitizen, existingAcc);
                 setVisible(false);
             }

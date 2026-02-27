@@ -109,25 +109,26 @@ public class FastCash extends JFrame implements ActionListener {
         String amountStr = ((JButton)e.getSource()).getText().substring(4).replace(",", "");
         double withdrawalAmount = Double.parseDouble(amountStr);
         Timestamp date = new Timestamp(System.currentTimeMillis());
+        double balance = 0.0;
 
         try {
             ConnectDB con = new ConnectDB();
-            String q = "SELECT * FROM bank_transactions WHERE (account_number = ? OR card_number = ?) AND card_pin = ?";
+            String q = "SELECT * FROM transactions WHERE (account_number = ? OR card_number = ?) AND card_pin = ?";
             try (PreparedStatement pstmt = con.connection.prepareStatement(q)) {
                 pstmt.setString(1, accNum);
                 pstmt.setString(2, cardNum);
                 pstmt.setString(3, cardPin);
 
-                ResultSet resultSet = pstmt.executeQuery();
-                double balance = 0.0;
-                while (resultSet.next()) {
-                    String type = resultSet.getString("type");
-                    double amt = Double.parseDouble(resultSet.getString("amount"));
+                try (ResultSet resultSet = pstmt.executeQuery()) {
+                    while (resultSet.next()) {
+                        String type = resultSet.getString("type");
+                        double amt = Double.parseDouble(resultSet.getString("amount"));
 
-                    if (type.equalsIgnoreCase("Deposit")) {
-                        balance += amt;
-                    } else {
-                        balance -= amt;
+                        if (type.equalsIgnoreCase("Deposit")) {
+                            balance += amt;
+                        } else {
+                            balance -= amt;
+                        }
                     }
                 }
 
@@ -142,7 +143,7 @@ public class FastCash extends JFrame implements ActionListener {
                     return;
                 }
 
-                String q2 = "INSERT INTO bank_transactions VALUES(?, ?, ?, ?, ?, ?, ?)";
+                String q2 = "INSERT INTO transactions VALUES(?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement pstmt2 = con.connection.prepareStatement(q2)) {
                     pstmt2.setString(1, accNum);
                     pstmt2.setString(2, cardNum);

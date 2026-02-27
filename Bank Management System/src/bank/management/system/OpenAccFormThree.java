@@ -172,7 +172,7 @@ public class OpenAccFormThree extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    // 1. Move the facility logic to a separate method (Fixes the Warning: It's possible to extract method returning 'facility' from a long surrounding method)
+    // Facility logic (Fixes the Warning: It's possible to extract method returning 'facility' from a long surrounding method)
     private String getSelectedFacilities() {
         StringBuilder facility = new StringBuilder();
         if (cBoxAtmCard.isSelected()) facility.append("ATM Card, ");
@@ -188,7 +188,7 @@ public class OpenAccFormThree extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == cancel) {
+        if (e.getSource() == cancel) { // e.getSource returns an object. If we extract text from button use ((<button_name>).e.getSoource())
             System.exit(0);
             return;
         }
@@ -219,74 +219,52 @@ public class OpenAccFormThree extends JFrame implements ActionListener {
         String cardNum = rawNum.replaceAll(".{4}", "$0 ").trim();
         String cardPin = String.format("%04d", ran.nextInt(10000));
 
-//        String facility = "";
-//        if (cBoxAtmCard.isSelected()) {
-//            facility += "ATM Card";
-//        } else if (cBoxNetBanking.isSelected()) {
-//            facility += "Internet Banking";
-//        } else if (cBoxMobBanking.isSelected()) {
-//            facility += "Mobile Banking";
-//        } else if (cBoxEmailAlert.isSelected()) {
-//            facility += "Email Alert";
-//        } else if (cBoxChequeBook.isSelected()) {
-//            facility += "Cheque Book";
-//        } else if (cBoxEStmt.isSelected()) {
-//            facility += "E-Statement";
-//        }
-
         try {
             ConnectDB con = new ConnectDB();
-//            String q1 = "INSERT INTO open_acc_form_three VALUES(?, ?, ?, ?, ?)";
-            String q2 = "INSERT INTO atm_login VALUES(?, ?, ?)";
-            String q3 = "INSERT INTO bank_login VALUES(?, ?)";
-            String q4 = "INSERT INTO person_info VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt2 = con.connection.prepareStatement(q2);
-                PreparedStatement pstmt3 = con.connection.prepareStatement(q3);
-                PreparedStatement pstmt4 = con.connection.prepareStatement(q4)) {
-//                pstmt1.setString(1, formNum);
-//                pstmt1.setString(2, accType);
-//                pstmt1.setString(3, cardNum);
-//                pstmt1.setString(4, cardPin);
-//                pstmt1.setString(5, facility);
+            String q1 = "INSERT INTO atm_login VALUES(?, ?, ?)";
+            String q2 = "INSERT INTO bank_login VALUES(?, ?)";
+            String q3 = "INSERT INTO acc_holder_info VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt1 = con.connection.prepareStatement(q1);
+                PreparedStatement pstmt2 = con.connection.prepareStatement(q2);
+                PreparedStatement pstmt3 = con.connection.prepareStatement(q3)) {
+
+                pstmt1.setString(1, accNum);
+                pstmt1.setString(2, cardNum);
+                pstmt1.setString(3, cardPin);
 
                 pstmt2.setString(1, accNum);
-                pstmt2.setString(2, cardNum);
-                pstmt2.setString(3, cardPin);
+                pstmt2.setString(2, loginPin);
 
-                pstmt3.setString(1, accNum);
+                pstmt3.setString(1, formNum);
                 pstmt3.setString(2, loginPin);
+                pstmt3.setString(3, accNum);
+                pstmt3.setString(4, name);
+                pstmt3.setString(5, fatherName);
+                pstmt3.setString(6, dOB);
+                pstmt3.setString(7, gender);
+                pstmt3.setString(8, email);
+                pstmt3.setString(9, maritalStatus);
+                pstmt3.setString(10, address);
+                pstmt3.setString(11, city);
+                pstmt3.setString(12, pinCode);
+                pstmt3.setString(13, state);
+                pstmt3.setString(14, religion);
+                pstmt3.setString(15, category);
+                pstmt3.setString(16, income);
+                pstmt3.setString(17, education);
+                pstmt3.setString(18, occupation);
+                pstmt3.setString(19, panNum);
+                pstmt3.setString(20, aadhaarNum);
+                pstmt3.setString(21, seniorCitizen);
+                pstmt3.setString(22, existingAcc);
+                pstmt3.setString(23, accType);
+                pstmt3.setString(24, cardNum);
+                pstmt3.setString(25, cardPin);
+                pstmt3.setString(26, facility);
 
-                pstmt4.setString(1, formNum);
-                pstmt4.setString(2, loginPin);
-                pstmt4.setString(3, accNum);
-                pstmt4.setString(4, name);
-                pstmt4.setString(5, fatherName);
-                pstmt4.setString(6, dOB);
-                pstmt4.setString(7, gender);
-                pstmt4.setString(8, email);
-                pstmt4.setString(9, maritalStatus);
-                pstmt4.setString(10, address);
-                pstmt4.setString(11, city);
-                pstmt4.setString(12, pinCode);
-                pstmt4.setString(13, state);
-                pstmt4.setString(14, religion);
-                pstmt4.setString(15, category);
-                pstmt4.setString(16, income);
-                pstmt4.setString(17, education);
-                pstmt4.setString(18, occupation);
-                pstmt4.setString(19, panNum);
-                pstmt4.setString(20, aadhaarNum);
-                pstmt4.setString(21, seniorCitizen);
-                pstmt4.setString(22, existingAcc);
-                pstmt4.setString(23, accType);
-                pstmt4.setString(24, cardNum);
-                pstmt4.setString(25, cardPin);
-                pstmt4.setString(26, facility);
-
-//                pstmt1.executeUpdate();
+                pstmt1.executeUpdate();
                 pstmt2.executeUpdate();
                 pstmt3.executeUpdate();
-                pstmt4.executeUpdate();
                 // Display Card Number and Pin
                 JOptionPane.showMessageDialog(null, "Account Number : " + accNum + "\nLogin Pin" + loginPin + "\n\nCard Number : " + cardNum + "\nPin : " + cardPin);
                 new Main();

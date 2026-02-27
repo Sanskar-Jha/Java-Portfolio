@@ -67,26 +67,27 @@ public class Passbook extends JFrame implements ActionListener {
 
         try {
             ConnectDB con = new ConnectDB();
-            String q = "SELECT * FROM bank_transactions WHERE account_number = ?";
+            String q = "SELECT * FROM transactions WHERE account_number = ?";
             try (PreparedStatement pstmt = con.connection.prepareStatement(q)) {
                 pstmt.setString(1, accNum);
 
-                ResultSet resultSet = pstmt.executeQuery();
-                while (resultSet.next()) {
-                    String date = resultSet.getString("date");
-                    String type = resultSet.getString("type");
-                    double amount = resultSet.getDouble("amount");
-                    double balance = resultSet.getDouble("balance");
+                try (ResultSet resultSet = pstmt.executeQuery()) {
+                    while (resultSet.next()) {
+                        String date = resultSet.getString("date");
+                        String type = resultSet.getString("type");
+                        double amount = resultSet.getDouble("amount");
+                        double balance = resultSet.getDouble("balance");
 
-                    // Creating a table row with 3 columns
-                    statementText.append("<tr>")
-                            .append("<td width='250' align='left'>").append(date).append("</td>")
-                            .append("<td width='200'>").append(type).append(" &nbsp; ").append(amount).append("</td>")
-                            .append("<td width='100' align='right'>").append(" &nbsp; ").append(balance).append("</td>")
-                            .append("</tr>");
+                        // Creating a table row with 3 columns
+                        statementText.append("<tr>")
+                                .append("<td width='250' align='left'>").append(date).append("</td>")
+                                .append("<td width='200'>").append(type).append(" &nbsp; ").append(amount).append("</td>")
+                                .append("<td width='100' align='right'>").append(" &nbsp; ").append(balance).append("</td>")
+                                .append("</tr>");
+                    }
+                    statementText.append("</table></html>");
+                    displayTransaction.setText(statementText.toString());
                 }
-                statementText.append("</table></html>");
-                displayTransaction.setText(statementText.toString());
             }
         } catch (Exception E) {
             logger.log(Level.SEVERE, "Database connection error", E);

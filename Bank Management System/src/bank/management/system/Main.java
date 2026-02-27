@@ -11,8 +11,6 @@ import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main extends JFrame implements ActionListener {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
@@ -97,7 +95,7 @@ public class Main extends JFrame implements ActionListener {
         });
         add(lCreateAcc);
 
-        setLayout(null);
+        setLayout(null); // Default layout is border. If we want to set elements according to our preference
         setSize(850,480); // Set frame size
         setLocation(360, 150); // Set location
         getContentPane().setBackground(new Color(151, 118, 153, 255));

@@ -103,7 +103,7 @@ public class ChangePin extends JFrame implements ActionListener {
 
         try {
             ConnectDB con = new ConnectDB();
-            String q1 = "UPDATE bank_transactions SET card_pin = ? WHERE card_pin = ?";
+            String q1 = "UPDATE transactions SET card_pin = ? WHERE card_pin = ?";
             String q2 = "UPDATE atm_login SET card_pin = ? WHERE card_pin = ?";
 
             try (PreparedStatement pstmt1 = con.connection.prepareStatement(q1);

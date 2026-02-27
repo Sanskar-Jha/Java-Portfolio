@@ -55,31 +55,32 @@ public class MiniStatement extends JFrame implements ActionListener {
 
         try {
             ConnectDB con = new ConnectDB();
-            String q = "SELECT date, type, amount FROM bank_transactions WHERE (account_number = ? OR card_number = ?) AND card_pin = ? ORDER BY date DESC LIMIT 10";
+            String q = "SELECT date, type, amount FROM transactions WHERE (account_number = ? OR card_number = ?) AND card_pin = ? ORDER BY date DESC LIMIT 10";
             try (PreparedStatement pstmt = con.connection.prepareStatement(q)) {
                 pstmt.setString(1, accNum);
                 pstmt.setString(2, cardNum);
                 pstmt.setString(3, cardPin);
 
-                ResultSet resultSet = pstmt.executeQuery();
-                while (resultSet.next()) {
-                    String date = resultSet.getString("date");
-                    String type = resultSet.getString("type");
-                    String amt = resultSet.getString("amount");
+                try (ResultSet resultSet = pstmt.executeQuery()) {
+                    while (resultSet.next()) {
+                        String date = resultSet.getString("date");
+                        String type = resultSet.getString("type");
+                        String amt = resultSet.getString("amount");
 
-                    // Append each transaction to the string
-                    statementText.append(date).append("&nbsp;&nbsp;&nbsp;&nbsp;")
-                            .append(type).append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
-                            .append(amt).append("<br>");
+                        // Append each transaction to the string
+                        statementText.append(date).append("&nbsp;&nbsp;&nbsp;&nbsp;")
+                                .append(type).append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
+                                .append(amt).append("<br>");
 
-                    if (type.equalsIgnoreCase("Deposit")) {
-                        balance += Double.parseDouble(amt);
-                    } else {
-                        balance -= Double.parseDouble(amt);
+                        if (type.equalsIgnoreCase("Deposit")) {
+                            balance += Double.parseDouble(amt);
+                        } else {
+                            balance -= Double.parseDouble(amt);
+                        }
                     }
+                    statementText.append("<br><br><b>Total Balance: Rs ").append(balance).append("</b></html>");
+                    displayTransaction.setText(statementText.toString());
                 }
-                statementText.append("<br><br><b>Total Balance: Rs ").append(balance).append("</b></html>");
-                displayTransaction.setText(statementText.toString());
             }
         } catch (Exception E) {
             logger.log(Level.SEVERE, "Database Connection Error", E);

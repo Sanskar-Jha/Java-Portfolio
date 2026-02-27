@@ -102,22 +102,23 @@ public class Withdrawal extends JFrame implements ActionListener {
         try {
             ConnectDB con = new ConnectDB();
             // 1. Calculate Current Balance
-            String q1 = "SELECT * FROM bank_transactions WHERE (account_number = ? OR card_number = ?) AND card_pin = ?";
+            String q1 = "SELECT * FROM transactions WHERE (account_number = ? OR card_number = ?) AND card_pin = ?";
             double balance = 0.0;
 
             try (PreparedStatement pstmt1 = con.connection.prepareStatement(q1)) {
                 pstmt1.setString(1, accNum);
                 pstmt1.setString(2, cardNum);
                 pstmt1.setString(3, cardPin);
-                ResultSet resultSet = pstmt1.executeQuery();
+                try (ResultSet resultSet = pstmt1.executeQuery()) {
 
-                while (resultSet.next()) {
-                    String type = resultSet.getString("type");
-                    double amt = resultSet.getDouble("amount");
-                    if (type.equalsIgnoreCase("Deposit")) {
-                        balance += amt;
-                    } else {
-                        balance -= amt;
+                    while (resultSet.next()) {
+                        String type = resultSet.getString("type");
+                        double amt = resultSet.getDouble("amount");
+                        if (type.equalsIgnoreCase("Deposit")) {
+                            balance += amt;
+                        } else {
+                            balance -= amt;
+                        }
                     }
                 }
             }
@@ -134,7 +135,7 @@ public class Withdrawal extends JFrame implements ActionListener {
             }
 
             // 3. Record the Withdrawal
-            String q2 = "INSERT INTO bank_transactions VALUES(?, ?, ?, ?, ?, ?, ?)";
+            String q2 = "INSERT INTO transactions VALUES(?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement pstmt2 = con.connection.prepareStatement(q2)) {
                 pstmt2.setString(1, accNum);
                 pstmt2.setString(2, cardNum);

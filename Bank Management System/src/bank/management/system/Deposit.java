@@ -98,24 +98,25 @@ public class Deposit extends JFrame implements ActionListener {
         try {
             ConnectDB con = new ConnectDB();
             // 1. Calculate Current Balance
-            String q1 = "SELECT * FROM bank_transactions WHERE card_number = ? AND card_pin = ?";
+            String q1 = "SELECT * FROM transactions WHERE card_number = ? AND card_pin = ?";
 
             try (PreparedStatement pstmt1 = con.connection.prepareStatement(q1)) {
                 pstmt1.setString(1, cardNum);
                 pstmt1.setString(2, cardPin);
-                ResultSet resultSet = pstmt1.executeQuery();
+                try (ResultSet resultSet = pstmt1.executeQuery()) {
 
-                while (resultSet.next()) {
-                    String type = resultSet.getString("type");
-                    double amt = resultSet.getDouble("amount");
-                    if (type.equalsIgnoreCase("Deposit")) {
-                        balance += amt;
-                    } else {
-                        balance -= amt;
+                    while (resultSet.next()) {
+                        String type = resultSet.getString("type");
+                        double amt = resultSet.getDouble("amount");
+                        if (type.equalsIgnoreCase("Deposit")) {
+                            balance += amt;
+                        } else {
+                            balance -= amt;
+                        }
                     }
                 }
 
-                String q2 = "INSERT INTO bank_transactions VALUES(?, ?, ?, ?, ?, ?, ?)";
+                String q2 = "INSERT INTO transactions VALUES(?, ?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement pstmt2 = con.connection.prepareStatement(q2)) {
                     pstmt2.setString(1, accNum);
                     pstmt2.setString(2, cardNum);

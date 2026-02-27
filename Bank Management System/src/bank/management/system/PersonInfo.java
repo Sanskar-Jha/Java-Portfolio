@@ -136,35 +136,36 @@ public class PersonInfo extends JFrame implements ActionListener {
     private void loadDataFromDatabase() {
         try {
             ConnectDB con = new ConnectDB();
-            String q = "SELECT * FROM person_info WHERE account_number = ?";
+            String q = "SELECT * FROM acc_holder_info WHERE account_number = ?";
             try (PreparedStatement pstmt = con.connection.prepareStatement(q)) {
                 pstmt.setString(1, accNum);
 
-                ResultSet resultSet = pstmt.executeQuery();
-                if (resultSet.next()) {
-                    name.setText(resultSet.getString("name"));
-                    fatherName.setText(resultSet.getString("father_name"));
-                    dOB.setText(resultSet.getString("dob"));
-                    gender.setText(resultSet.getString("gender"));
-                    email.setText(resultSet.getString("email"));
-                    maritalStatus.setText(resultSet.getString("marital_status"));
-                    address.setText(resultSet.getString("address"));
-                    city.setText(resultSet.getString("city"));
-                    pinCode.setText(resultSet.getString("pin_code"));
-                    state.setText(resultSet.getString("state"));
-                    religion.setText(resultSet.getString("religion"));
-                    category.setText(resultSet.getString("category"));
-                    income.setText(resultSet.getString("income"));
-                    education.setText(resultSet.getString("education"));
-                    occupation.setText(resultSet.getString("occupation"));
-                    panNum.setText(resultSet.getString("pan_number"));
-                    aadhaarNum.setText(resultSet.getString("aadhaar_number"));
-                    sCitizen.setText(resultSet.getString("senior_citizen"));
-                    existingAcc.setText(resultSet.getString("existing_account"));
-                    accType.setText(resultSet.getString("account_type"));
-                    facility.setText(resultSet.getString("facility"));
+                try (ResultSet resultSet = pstmt.executeQuery()) {
+                    if (resultSet.next()) {
+                        name.setText(resultSet.getString("name"));
+                        fatherName.setText(resultSet.getString("father_name"));
+                        dOB.setText(resultSet.getString("dob"));
+                        gender.setText(resultSet.getString("gender"));
+                        email.setText(resultSet.getString("email"));
+                        maritalStatus.setText(resultSet.getString("marital_status"));
+                        address.setText(resultSet.getString("address"));
+                        city.setText(resultSet.getString("city"));
+                        pinCode.setText(resultSet.getString("pin_code"));
+                        state.setText(resultSet.getString("state"));
+                        religion.setText(resultSet.getString("religion"));
+                        category.setText(resultSet.getString("category"));
+                        income.setText(resultSet.getString("income"));
+                        education.setText(resultSet.getString("education"));
+                        occupation.setText(resultSet.getString("occupation"));
+                        panNum.setText(resultSet.getString("pan_number"));
+                        aadhaarNum.setText(resultSet.getString("aadhaar_number"));
+                        sCitizen.setText(resultSet.getString("senior_citizen"));
+                        existingAcc.setText(resultSet.getString("existing_account"));
+                        accType.setText(resultSet.getString("account_type"));
+                        facility.setText(resultSet.getString("facility"));
 
-//                    name.setEditable(false);  // Set JTextField to non-editable so user can't change them here
+    //                    name.setEditable(false);  // Set JTextField to non-editable so user can't change them here
+                    }
                 }
             }
         } catch (Exception e) {
