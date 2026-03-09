@@ -14,7 +14,7 @@ public class ConnectDB {
 
     public ConnectDB() {
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sj_bank_db", "root", "kingOfWater");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sj_bank_db", "root", "your_password");
             statement = connection.createStatement();
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Database Connection Error", e);
